@@ -144,7 +144,7 @@ quickPick.onDidChangeValue((value) => {
 
   // Filter and sort by fuzzy match score
   const matchedItems = allFolderItems
-    .map(item => ({
+    .map((item) => ({
       item,
       score: fuzzyMatch(value, item.description || ""),
     }))
@@ -187,11 +187,15 @@ async function acceptItem(item: FolderQuickPickItem) {
   quickPick.hide();
 }
 
-
 async function showDefaultQuickPick() {
   // Check if workspace folders exist
-  if (!vscode.workspace.workspaceFolders || vscode.workspace.workspaceFolders.length === 0) {
-    vscode.window.showErrorMessage("No workspace folder is open. Please open a folder first.");
+  if (
+    !vscode.workspace.workspaceFolders ||
+    vscode.workspace.workspaceFolders.length === 0
+  ) {
+    vscode.window.showErrorMessage(
+      "No workspace folder is open. Please open a folder first.",
+    );
     return;
   }
 
@@ -209,9 +213,10 @@ async function showDefaultQuickPick() {
     const folders = await collectAllFolders(workspace.uri, workspace.uri);
 
     // Add workspace prefix if multiple workspaces
-    const prefix = vscode.workspace.workspaceFolders.length > 1 ? `#${workspace.name}/` : "";
+    const prefix =
+      vscode.workspace.workspaceFolders.length > 1 ? `#${workspace.name}/` : "";
 
-    folders.forEach(folder => {
+    folders.forEach((folder) => {
       allFolders.push({
         uri: folder.uri,
         relativePath: prefix + folder.relativePath,

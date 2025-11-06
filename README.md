@@ -30,6 +30,7 @@ Press `Ctrl+Shift+O` (`Cmd+Shift+O` on Mac) to open the folder finder, then star
 ## Examples
 
 Given a folder structure:
+
 ```
 workspace/
   ├── src/
@@ -47,6 +48,7 @@ workspace/
 ## Excluded Directories
 
 The following directories are automatically excluded from search:
+
 - `node_modules`
 - `.git`
 - `dist`, `build`, `out`
@@ -61,4 +63,4 @@ The extension searches up to 10 levels deep by default to balance performance an
 
 ---
 
-*This extension was originally loosely based on [Go to Folder](https://github.com/zjffun/vscode-go-to-folder) by zjffun but has been completely rewritten.*
+_Credit: The project structure and initial inspiration for this extension are based on [Go to Folder](https://github.com/zjffun/vscode-go-to-folder) by zjffun. The extension code has been completely rewritten._

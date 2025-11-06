@@ -17,7 +17,3 @@ Initial release of the fuzzy folder finder extension by Yuval Karmi.
 - Case-insensitive fuzzy matching with scoring
 - No step-by-step navigation - flat list of all folders
 - Folder-only search (files removed)
-
----
-
-*This extension is loosely based on [Go to Folder](https://github.com/zjffun/vscode-go-to-folder) by zjffun, but has been completely rewritten with new functionality.*

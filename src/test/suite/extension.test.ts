@@ -7,9 +7,9 @@ suite("Extension", () => {
 
   const extension = vscode.extensions.getExtension(extensionID);
 
-  setup(async () => { });
+  setup(async () => {});
 
-  teardown(async () => { });
+  teardown(async () => {});
 
   test("All package.json commands should be registered in extension", (done) => {
     if (!extension) {

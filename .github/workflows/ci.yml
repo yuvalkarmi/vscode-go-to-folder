@@ -28,16 +28,10 @@ jobs:
           npx eslint
           npx prettier --check .
       - name: Compile
-        run: |
-          npm run compile
-          npm run compile-web
+        run: npm run compile
       - name: Test
-        run: |
-          xvfb-run -a npm run test
-          xvfb-run -a npm run test-web
+        run: xvfb-run -a npm run test
         if: runner.os == 'Linux'
       - name: Test
-        run: |
-          npm run test
-          npm run test-web
+        run: npm run test
         if: runner.os != 'Linux'

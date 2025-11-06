@@ -18,13 +18,9 @@ jobs:
           node-version: 20.x
       - run: npm ci
       - name: Compile
-        run: |
-          npm run compile
-          npm run compile-web
+        run: npm run compile
       - name: Test
-        run: |
-          xvfb-run -a npm run test
-          xvfb-run -a npm run test-web
+        run: xvfb-run -a npm run test
       - name: Publish
         if: success()
         run: npx vsce publish

@@ -26,11 +26,7 @@
     "onStartupFinished"
   ],
   "main": "./out/extension.js",
-  "browser": "./dist/web/extension.js",
-  "extensionKind": [
-    "workspace",
-    "ui"
-  ],
+  "extensionKind": ["workspace"],
   "contributes": {
     "menus": {
       "commandPalette": [
@@ -60,9 +56,6 @@
     "test": "node ./out/test/runTest.js",
     "eslint-fix": "eslint --fix .",
     "prettier-fix": "prettier --write .",
-    "watch-web": "webpack --watch",
-    "compile-web": "webpack --mode production --devtool hidden-source-map",
-    "test-web": "vscode-test-web --extensionDevelopmentPath=. --extensionTestsPath=./dist/web/test/suite/index.js",
     "_vscode:pack": "vsce package",
     "_vscode:install": "ls go-to-folder-*.vsix | xargs code --install-extension",
     "_vscode:uninstall": "code --uninstall-extension yuvalkarmi.go-to-folder"

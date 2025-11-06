@@ -1,3 +1,8 @@
+# v1.1.0
+
+- Now respects VS Code's `files.exclude` and `search.exclude` settings
+- Removed hardcoded exclusion list in favor of user-configurable exclusions
+
 # v1.0.0
 
 Initial release of the fuzzy folder finder extension by Yuval Karmi.

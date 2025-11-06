@@ -1,29 +1,38 @@
 import * as vscode from "vscode";
+import * as minimatch from "minimatch";
 
 interface FolderQuickPickItem extends vscode.QuickPickItem {
   uri: vscode.Uri;
 }
 
-// Directories to exclude from folder search
-const excludedDirs = new Set([
-  "node_modules",
-  ".git",
-  "dist",
-  "build",
-  "out",
-  ".vscode",
-  "vendor",
-  "target",
-  ".next",
-  ".svelte-kit",
-  "coverage",
-  ".cache",
-  ".parcel-cache",
-  ".turbo",
-]);
-
 // Maximum depth for recursive folder search
 const MAX_SEARCH_DEPTH = 10;
+
+/**
+ * Gets exclusion patterns from VS Code's files.exclude and search.exclude settings
+ */
+function getExclusionPatterns(): string[] {
+  const filesConfig = vscode.workspace.getConfiguration("files");
+  const searchConfig = vscode.workspace.getConfiguration("search");
+
+  const filesExclude =
+    filesConfig.get<Record<string, boolean>>("exclude") || {};
+  const searchExclude =
+    searchConfig.get<Record<string, boolean>>("exclude") || {};
+
+  // Combine both exclusion lists
+  const allExclusions = { ...filesExclude, ...searchExclude };
+
+  // Return only the patterns that are enabled (value is true)
+  return Object.keys(allExclusions).filter((pattern) => allExclusions[pattern]);
+}
+
+/**
+ * Checks if a relative path should be excluded based on VS Code's exclusion patterns
+ */
+function isExcluded(relativePath: string, patterns: string[]): boolean {
+  return patterns.some((pattern) => minimatch(relativePath, pattern));
+}
 
 interface FolderWithPath {
   uri: vscode.Uri;
@@ -36,6 +45,7 @@ interface FolderWithPath {
 async function collectAllFolders(
   uri: vscode.Uri,
   workspaceRoot: vscode.Uri,
+  exclusionPatterns: string[],
   depth: number = 0,
 ): Promise<FolderWithPath[]> {
   if (depth > MAX_SEARCH_DEPTH) {
@@ -48,13 +58,18 @@ async function collectAllFolders(
     const items = await vscode.workspace.fs.readDirectory(uri);
 
     for (const [name, fileType] of items) {
-      // Skip if not a directory or if excluded
-      if (!(fileType & vscode.FileType.Directory) || excludedDirs.has(name)) {
+      // Skip if not a directory
+      if (!(fileType & vscode.FileType.Directory)) {
         continue;
       }
 
       const folderUri = vscode.Uri.joinPath(uri, name);
       const relativePath = folderUri.path.replace(workspaceRoot.path + "/", "");
+
+      // Skip if excluded by VS Code's files.exclude settings
+      if (isExcluded(relativePath, exclusionPatterns)) {
+        continue;
+      }
 
       folders.push({
         uri: folderUri,
@@ -65,6 +80,7 @@ async function collectAllFolders(
       const subfolders = await collectAllFolders(
         folderUri,
         workspaceRoot,
+        exclusionPatterns,
         depth + 1,
       );
       folders.push(...subfolders);
@@ -207,10 +223,17 @@ async function showDefaultQuickPick() {
   quickPick.value = "";
   quickPick.show();
 
+  // Get exclusion patterns from VS Code settings
+  const exclusionPatterns = getExclusionPatterns();
+
   // Collect all folders from all workspace roots
   const allFolders: FolderWithPath[] = [];
   for (const workspace of vscode.workspace.workspaceFolders) {
-    const folders = await collectAllFolders(workspace.uri, workspace.uri);
+    const folders = await collectAllFolders(
+      workspace.uri,
+      workspace.uri,
+      exclusionPatterns,
+    );
 
     // Add workspace prefix if multiple workspaces
     const prefix =

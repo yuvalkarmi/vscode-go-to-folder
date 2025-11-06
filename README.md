@@ -6,7 +6,7 @@ Quick fuzzy search to navigate to any folder in your workspace.
 
 - **Fuzzy Search**: Find folders with non-contiguous character matching (e.g., type "srcabout" to find "src/app/about")
 - **Workspace-wide Search**: Always starts at the workspace root and searches all subfolders
-- **Smart Exclusions**: Automatically excludes `node_modules`, `.git`, `dist`, `build`, and other common directories
+- **Smart Exclusions**: Respects your VS Code `files.exclude` and `search.exclude` settings
 - **Multi-workspace Support**: Search across all workspace folders when multiple are open
 - **Fast Keyboard Shortcut**: `Ctrl+Shift+O` (Windows/Linux) or `Cmd+Shift+O` (Mac)
 
@@ -47,15 +47,12 @@ workspace/
 
 ## Excluded Directories
 
-The following directories are automatically excluded from search:
+The extension respects your VS Code exclusion settings:
 
-- `node_modules`
-- `.git`
-- `dist`, `build`, `out`
-- `.vscode`
-- `vendor`, `target`
-- `.next`, `.svelte-kit`
-- `coverage`, `.cache`, `.parcel-cache`, `.turbo`
+- **Files: Exclude** - Standard file explorer exclusions
+- **Search: Exclude** - Search-specific exclusions
+
+This means any folders you've excluded in your VS Code settings (like `node_modules`, `.git`, `dist`, etc.) will automatically be filtered from the folder list. You can customize these exclusions in your VS Code settings.
 
 ## Configuration
 

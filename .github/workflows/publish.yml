@@ -21,13 +21,13 @@ jobs:
         run: npm run compile
       - name: Test
         run: xvfb-run -a npm run test
-      - name: Publish
-        if: success()
-        run: npx vsce publish
-        env:
-          VSCE_PAT: ${{ secrets.VSCE_PAT }}
       - name: Publish to Open VSX Registry
         if: success()
         uses: HaaLeo/publish-vscode-extension@v1
         with:
           pat: ${{ secrets.OPEN_VSX_TOKEN }}
+      - name: Publish
+        if: success()
+        run: npx vsce publish
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}

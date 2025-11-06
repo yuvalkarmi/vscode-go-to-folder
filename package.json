@@ -1,7 +1,7 @@
 {
   "name": "go-to-folder",
-  "displayName": "Go to Folder",
-  "description": "Quick go to folder.",
+  "displayName": "Go to Folder - Sidebar",
+  "description": "Quickly jump to any folder in the sidebar using fuzzy search. Type partial folder names and instantly jump to them in the sidebar.",
   "keywords": [
     "quick",
     "open folder"
